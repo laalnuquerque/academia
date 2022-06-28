@@ -9,7 +9,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class AlunoDto extends PessoaDto{
     private Date dataMatricula;
-    private int tempoDeAcademia;
     private String nivel;
+    private int tempoDeAcademia;
+
 
 }
