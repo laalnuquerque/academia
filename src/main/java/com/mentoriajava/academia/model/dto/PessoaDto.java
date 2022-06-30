@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PessoaDto {
-    protected int id;
-    protected String nome;
-    protected String cpf;
-    protected String estadoCivil;
+    private long id;
+    private String nome;
+    private String cpf;
+    private String estadoCivil;
 
 }
