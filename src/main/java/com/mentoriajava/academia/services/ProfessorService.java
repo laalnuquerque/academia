@@ -28,6 +28,7 @@ public class ProfessorService {
 
         //verificar o que o findbyId esta retornando e criar ele para retornar o que busquei
         Optional<ProfessorEntity> professorResultado = professorRepository.findById(id);
+        //Optional<ProfessorEntity> professorResultado = professorRepository.findByNome("Johannes Merschbacher");
         if (professorResultado.isEmpty()) {
             return null;
         } else {
