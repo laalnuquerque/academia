@@ -44,6 +44,29 @@ public class ProfessorService {
         }
     }
 
+    public ResponseEntity atualizar(ProfessorDto  professorDto){
+
+        ProfessorEntity professorAtualizar = converterEntity(professorDto);
+        Optional<ProfessorEntity> professorResultadoAtualizar = professorRepository.findByCpf(professorDto.getCpf());
+        if (professorResultadoAtualizar.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Professor nao cadastrado");
+        } else {
+            professorRepository.save(professorAtualizar);
+            return ResponseEntity.status(HttpStatus.OK).body("Cadastro atulizado com sucesso");
+        }
+    }
+
+    public ResponseEntity deletar(String cpf){
+
+        Optional<ProfessorEntity> professorDeletar = professorRepository.findByCpf(cpf);
+        if (professorDeletar.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Professor nao cadastrado");
+        } else {
+            professorRepository.deleteAll();
+            return ResponseEntity.status(HttpStatus.OK).body("Professor deletado com sucesso");
+        }
+    }
+
     //criado um metodo/funcao para converter o dto para entity
     private ProfessorEntity converterEntity(ProfessorDto professorDto) {
         ProfessorEntity professor = new ProfessorEntity();

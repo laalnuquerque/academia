@@ -31,4 +31,14 @@ public class ProfessorController {
         return professorService.consultar(id);
     }
 
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity atualizar(@RequestBody ProfessorDto professorDto) {
+        return professorService.atualizar(professorDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletar(@PathVariable(name = "cpf") String cpf) {
+        return professorService.deletar(cpf);
+    }
+
 }
