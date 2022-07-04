@@ -11,5 +11,5 @@ import java.util.Optional;
 //mostra pro spring que e repositorio
 @Repository
 public interface ProfessorRepository extends JpaRepository<ProfessorEntity, Long> {
-    Optional<ProfessorEntity> findByNome(String nome);
+    Optional<ProfessorEntity> findByCpf(String cpf);
 }

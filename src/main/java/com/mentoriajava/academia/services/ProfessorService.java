@@ -4,7 +4,10 @@ import com.mentoriajava.academia.model.dto.ProfessorDto;
 import com.mentoriajava.academia.model.entities.ProfessorEntity;
 import com.mentoriajava.academia.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Optional;
 
@@ -18,9 +21,13 @@ public class ProfessorService {
 
     }
 
-    public void cadastrar(ProfessorDto professorDto){
+    public ResponseEntity cadastrar(ProfessorDto professorDto){
         ProfessorEntity professor = converterEntity(professorDto);
-        professorRepository.save(professor);
+        Optional<ProfessorEntity> professorBuscar = professorRepository.findByCpf(professorDto.getCpf());
+        if (professorBuscar.isEmpty()) {
+            professorRepository.save(professor);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Professor existente no sistema");
     }
 
 
