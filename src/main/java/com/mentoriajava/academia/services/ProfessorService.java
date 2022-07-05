@@ -7,14 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Optional;
+
+import static com.mentoriajava.academia.model.enums.Respostas.RESPOSTAOK;
+import static com.mentoriajava.academia.model.enums.Respostas.RESPOSTANOK;
+
 
 @Component
 public class ProfessorService {
 
     private ProfessorRepository professorRepository;
+
     @Autowired
     public ProfessorService(ProfessorRepository professorRepository) {
         this.professorRepository = professorRepository;
@@ -26,15 +30,16 @@ public class ProfessorService {
         Optional<ProfessorEntity> professorBuscar = professorRepository.findByCpf(professorDto.getCpf());
         if (professorBuscar.isEmpty()) {
             professorRepository.save(professor);
+            return ResponseEntity.status(HttpStatus.OK).body("Professor cadastrado com sucesso");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Professor existente no sistema");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Professor existente no sistema");
     }
 
 
-    public ProfessorDto consultar(Long id){
-
+    public ProfessorDto consultar(String cpf){
         //verificar o que o findbyId esta retornando e criar ele para retornar o que busquei
-        Optional<ProfessorEntity> professorResultado = professorRepository.findById(id);
+        Optional<ProfessorEntity> professorResultado = professorRepository.findByCpf(cpf);
         //Optional<ProfessorEntity> professorResultado = professorRepository.findByNome("Johannes Merschbacher");
         if (professorResultado.isEmpty()) {
             return null;
@@ -44,28 +49,29 @@ public class ProfessorService {
         }
     }
 
-    public ResponseEntity atualizar(ProfessorDto  professorDto){
-
+    public String atualizar(ProfessorDto  professorDto){
         ProfessorEntity professorAtualizar = converterEntity(professorDto);
         Optional<ProfessorEntity> professorResultadoAtualizar = professorRepository.findByCpf(professorDto.getCpf());
         if (professorResultadoAtualizar.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Professor nao cadastrado");
-        } else {
-            professorRepository.save(professorAtualizar);
-            return ResponseEntity.status(HttpStatus.OK).body("Cadastro atulizado com sucesso");
+            return RESPOSTANOK;
         }
+        ProfessorEntity professorAtualizar2 = converterEntity(professorDto);
+        professorAtualizar2.setId(professorResultadoAtualizar.get().getId());
+
+        professorRepository.save(professorAtualizar2);
+        return RESPOSTAOK;
     }
 
-    public ResponseEntity deletar(String cpf){
-
+    public String deletar(String cpf){
         Optional<ProfessorEntity> professorDeletar = professorRepository.findByCpf(cpf);
         if (professorDeletar.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Professor nao cadastrado");
+            return RESPOSTANOK;
         } else {
             professorRepository.deleteAll();
-            return ResponseEntity.status(HttpStatus.OK).body("Professor deletado com sucesso");
+            return RESPOSTAOK;
         }
     }
+
 
     //criado um metodo/funcao para converter o dto para entity
     private ProfessorEntity converterEntity(ProfessorDto professorDto) {
