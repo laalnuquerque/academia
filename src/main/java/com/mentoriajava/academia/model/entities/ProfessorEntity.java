@@ -41,6 +41,5 @@ public class ProfessorEntity  implements Serializable {
     @Column
     private Date dataInicioEmpresa;
 
-    @Column
-    private int tempoDeEmpresa;
+
 }

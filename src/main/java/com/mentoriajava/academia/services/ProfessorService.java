@@ -4,8 +4,6 @@ import com.mentoriajava.academia.model.dto.ProfessorDto;
 import com.mentoriajava.academia.model.entities.ProfessorEntity;
 import com.mentoriajava.academia.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -25,24 +23,22 @@ public class ProfessorService {
 
     }
 
-    public ResponseEntity cadastrar(ProfessorDto professorDto){
+    public String cadastrar(ProfessorDto professorDto){
         ProfessorEntity professor = converterEntity(professorDto);
-        Optional<ProfessorEntity> professorBuscar = professorRepository.findByCpf(professorDto.getCpf());
+        Optional<ProfessorEntity> professorBuscar = professorRepository.findByCpf(professor.getCpf());
         if (professorBuscar.isEmpty()) {
             professorRepository.save(professor);
-            return ResponseEntity.status(HttpStatus.OK).body("Professor cadastrado com sucesso");
+            return RESPOSTAOK;
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Professor existente no sistema");
+            return RESPOSTANOK;
         }
     }
 
-
-    public ProfessorDto consultar(String cpf){
+    public Object consultar(String cpf){
         //verificar o que o findbyId esta retornando e criar ele para retornar o que busquei
         Optional<ProfessorEntity> professorResultado = professorRepository.findByCpf(cpf);
-        //Optional<ProfessorEntity> professorResultado = professorRepository.findByNome("Johannes Merschbacher");
         if (professorResultado.isEmpty()) {
-            return null;
+            return RESPOSTANOK;
         } else {
             ProfessorDto professorConvertido = converterDto(professorResultado.get());
             return professorConvertido;
@@ -70,7 +66,6 @@ public class ProfessorService {
             return RESPOSTAOK;
         }
     }
-
 
     //criado um metodo/funcao para converter o dto para entity
     private ProfessorEntity converterEntity(ProfessorDto professorDto) {

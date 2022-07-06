@@ -10,7 +10,6 @@ import java.util.Date;
 public class AlunoDto extends PessoaDto{
     private Date dataMatricula;
     private String nivel;
-    private int tempoDeAcademia;
 
 
 }

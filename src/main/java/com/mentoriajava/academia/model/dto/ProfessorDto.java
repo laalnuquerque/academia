@@ -13,5 +13,4 @@ public class ProfessorDto extends PessoaDto{
     private String cargo;
     private double salario;
     private Date   dataInicioEmpresa;
-    private int    tempoDeEmpresa;
 }

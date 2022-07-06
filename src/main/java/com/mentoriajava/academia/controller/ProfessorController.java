@@ -8,8 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.mentoriajava.academia.model.enums.Respostas.RESPOSTAOK;
-import static com.mentoriajava.academia.model.enums.Respostas.RESPOSTANOK;
+import static com.mentoriajava.academia.model.enums.Respostas.*;
 
 @RestController
 @RequestMapping("/professor")
@@ -25,32 +24,39 @@ public class ProfessorController {
     //spring so aceita se tiver o json/informacao
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity cadastrar(@RequestBody ProfessorDto professorDto) {
-        return professorService.cadastrar(professorDto);
+        if (professorService.cadastrar(professorDto).equals(RESPOSTAOK)) {
+            return ResponseEntity.status(HttpStatus.OK).body(CADASTRADO_COM_SUCESSO);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ENCONTRADO);
+        }
     }
 
     //@pathvariable faz a ligacao do id do mapping que eh o mesmo id que Long id
     //produces faz o spring dizer que vai devolver um json
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ProfessorDto consultar(@PathVariable(name = "id") String cpf) {
-
-        return professorService.consultar(cpf);
+    public ResponseEntity consultar(@PathVariable(name = "id") String cpf) {
+        if (professorService.consultar(cpf).equals(RESPOSTANOK)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MENSAGEMNOK);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(professorService.consultar(cpf));
+        }
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> atualizar(@RequestBody ProfessorDto professorDto) {
         if (professorService.atualizar(professorDto).equals(RESPOSTANOK)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Professor nao cadastrado");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MENSAGEMNOK);
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body("Cadastro atualizado com sucesso");
+            return ResponseEntity.status(HttpStatus.OK).body(CADASTRO_ATUALIZADO_COM_SUCESSO);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deletar(@PathVariable(name = "id") String cpf) {
         if (professorService.deletar(cpf).equals(RESPOSTANOK)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Professor nao cadastrado");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MENSAGEMNOK);
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body("Professor deletado com sucesso");
+            return ResponseEntity.status(HttpStatus.OK).body(DELETADO);
         }
     }
 

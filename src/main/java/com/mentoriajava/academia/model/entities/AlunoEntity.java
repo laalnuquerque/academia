@@ -9,5 +9,4 @@ public class AlunoEntity {
     private String estadoCivil;
     private Date dataMatricula;
     private String nivel;
-    private int tempoDeAcademia;
 }
