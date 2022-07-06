@@ -51,14 +51,13 @@ public class ProfessorService {
 
     public String atualizar(ProfessorDto  professorDto){
         ProfessorEntity professorAtualizar = converterEntity(professorDto);
-        Optional<ProfessorEntity> professorResultadoAtualizar = professorRepository.findByCpf(professorDto.getCpf());
+        Optional<ProfessorEntity> professorResultadoAtualizar = professorRepository.findByCpf(professorAtualizar.getCpf());
         if (professorResultadoAtualizar.isEmpty()) {
             return RESPOSTANOK;
         }
-        ProfessorEntity professorAtualizar2 = converterEntity(professorDto);
-        professorAtualizar2.setId(professorResultadoAtualizar.get().getId());
-
-        professorRepository.save(professorAtualizar2);
+        professorAtualizar.setId(professorResultadoAtualizar.get().getId());
+        professorAtualizar.setDataInicioEmpresa(professorResultadoAtualizar.get().getDataInicioEmpresa());
+        professorRepository.save(professorAtualizar);
         return RESPOSTAOK;
     }
 
@@ -67,7 +66,7 @@ public class ProfessorService {
         if (professorDeletar.isEmpty()) {
             return RESPOSTANOK;
         } else {
-            professorRepository.deleteAll();
+            professorRepository.deleteById(professorDeletar.get().getId());
             return RESPOSTAOK;
         }
     }

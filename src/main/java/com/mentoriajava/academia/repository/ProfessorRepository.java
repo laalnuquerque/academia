@@ -12,4 +12,6 @@ import java.util.Optional;
 @Repository
 public interface ProfessorRepository extends JpaRepository<ProfessorEntity, Long> {
     Optional<ProfessorEntity> findByCpf(String cpf);
+    Optional<ProfessorEntity> deleteByCpf(String cpf);
+
 }
