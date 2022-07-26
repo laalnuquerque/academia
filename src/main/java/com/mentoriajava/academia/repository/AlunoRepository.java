@@ -5,9 +5,12 @@ import com.mentoriajava.academia.model.entities.ProfessorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface AlunoRepository extends JpaRepository<AlunoEntity, Long> {
     Optional<AlunoEntity> findByCpf(String cpf);
+
+    List<AlunoEntity> findAllByNivel(String nivel);
 }

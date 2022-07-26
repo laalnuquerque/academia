@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.mentoriajava.academia.model.enums.Respostas.*;
 @RestController
@@ -30,6 +29,16 @@ public class AlunoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ENCONTRADO);
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(CADASTRADO_COM_SUCESSO);
+        }
+    }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity consultar(@PathVariable(name = "id") String nivel){
+        if (alunoService.consultarNivel(nivel) == null ){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(RESPOSTANOK);
+        } else {
+            return ResponseEntity.ok((alunoService.consultarNivel(nivel)));
+            //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ENCONTRADO);
         }
     }
 

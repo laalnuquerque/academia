@@ -8,5 +8,6 @@ public class Respostas {
     public static final String ENCONTRADO = "CPF ja cadastrado";
     public static final String CADASTRADO_COM_SUCESSO = "Cadastrado com sucesso";
     public static final String CADASTRO_ATUALIZADO_COM_SUCESSO = "Cadastro atualizado com sucesso";
+    public static final String NIVEL_NAO_ENCONTRADO = "Nivel nao encontrado";
 
 }
